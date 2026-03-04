@@ -1,0 +1,129 @@
+{
+    "history": [
+        {
+            "recipe_id": 647875,
+            "title": "Indian-Style Dill and Turmeric Potato Salad",
+            "timestamp": "2026-03-03",
+            "ingredients": [
+                "of chilli flakes",
+                "dill",
+                "garlic",
+                "olive oil",
+                "potatoes",
+                "salt",
+                "turmeric powder"
+            ],
+            "usedIngredients": [
+                "garlic",
+                "olive oil"
+            ],
+            "missedIngredients": [
+                "of chilli flakes",
+                "dill",
+                "potatoes",
+                "salt",
+                "turmeric powder"
+            ],
+            "cook_time": 30,
+            "calories": 416,
+            "cuisines": [
+                "Indian",
+                "Asian"
+            ],
+            "image": "https://img.spoonacular.com/recipes/647875-312x231.jpg"
+        },
+        {
+            "recipe_id": 636356,
+            "title": "Bruschetta Stuffed Potatoes",
+            "timestamp": "2026-03-03",
+            "ingredients": [
+                "baking potatoes",
+                "olive oil",
+                "onion",
+                "tomato",
+                "garlic",
+                "basil",
+                "mozzarella cheese",
+                "cultured dairy",
+                "butter",
+                "olive oil",
+                "sea salt & pepper"
+            ],
+            "usedIngredients": [
+                "olive oil",
+                "onion",
+                "tomato",
+                "garlic",
+                "basil",
+                "olive oil"
+            ],
+            "missedIngredients": [
+                "baking potatoes",
+                "mozzarella cheese",
+                "cultured dairy",
+                "butter",
+                "sea salt & pepper"
+            ],
+            "cook_time": 45,
+            "calories": 553,
+            "cuisines": [
+                "Mediterranean",
+                "Italian",
+                "European"
+            ],
+            "image": "https://img.spoonacular.com/recipes/636356-312x231.jpg"
+        },
+        {
+            "recipe_id": 650484,
+            "title": "Luscious Palak Paneer",
+            "timestamp": "2026-03-03",
+            "ingredients": [
+                "baking powder",
+                "cardamom powder",
+                "cinnamon powder",
+                "coriander powder",
+                "cumin powder",
+                "cloves garlic",
+                "ginger",
+                "chilies",
+                "ground fennel",
+                "onion",
+                "paneer",
+                "salt",
+                "spinach",
+                "sunflower oil",
+                "tomatoes",
+                "turmeric",
+                "water"
+            ],
+            "usedIngredients": [
+                "onion",
+                "spinach"
+            ],
+            "missedIngredients": [
+                "baking powder",
+                "cardamom powder",
+                "cinnamon powder",
+                "coriander powder",
+                "cumin powder",
+                "cloves garlic",
+                "ginger",
+                "chilies",
+                "ground fennel",
+                "paneer",
+                "salt",
+                "sunflower oil",
+                "tomatoes",
+                "turmeric",
+                "water"
+            ],
+            "cook_time": 30,
+            "calories": 559,
+            "cuisines": [
+                "Indian",
+                "Asian"
+            ],
+            "image": "https://img.spoonacular.com/recipes/650484-312x231.jpg"
+        }
+    ]
+}
