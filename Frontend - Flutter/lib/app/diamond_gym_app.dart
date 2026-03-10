@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../home/home_shell.dart';
 
@@ -8,63 +7,47 @@ class DiamondGymApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme =
-        ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: const Color(0xFF2DE2FF),
-        ).copyWith(
-          primary: const Color(0xFF2DE2FF),
-          onPrimary: const Color(0xFF00131A),
-          secondary: const Color(0xFF6CB8FF),
-          onSecondary: const Color(0xFF071420),
-          surface: const Color(0xFF101A2B),
-          onSurface: const Color(0xFFE6F6FF),
-          onSurfaceVariant: const Color(0xFFC9E7FF),
-          error: const Color(0xFFFF5D73),
-          onError: const Color(0xFF2A0007),
-        );
+    const background = Color(0xFF07111F);
+    const surface = Color(0xFF0F1B30);
+    const card = Color(0xFF13223B);
+    const border = Color(0xFF244066);
+    const primary = Color(0xFF33C2FF);
+    const secondary = Color(0xFF7CFFB2);
+    const textPrimary = Color(0xFFF4F8FF);
+    const textSecondary = Color(0xFF9BB1D1);
 
-    return MaterialApp(
+    return CupertinoApp(
       title: 'Diamond Gym',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: colorScheme,
-        textTheme:
-            GoogleFonts.plusJakartaSansTextTheme(
-              Theme.of(context).textTheme,
-            ).apply(
-              bodyColor: colorScheme.onSurface,
-              displayColor: colorScheme.onSurface,
-            ),
-        scaffoldBackgroundColor: const Color(0xFF070C17),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0B1222),
-          foregroundColor: Color(0xFFE6F6FF),
-          surfaceTintColor: Colors.transparent,
-        ),
-        cardTheme: const CardThemeData(
-          color: Color(0xFF111B2D),
-          surfaceTintColor: Colors.transparent,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: colorScheme.primary,
-            foregroundColor: colorScheme.onPrimary,
+      theme: const CupertinoThemeData(
+        brightness: Brightness.dark,
+        primaryColor: primary,
+        scaffoldBackgroundColor: background,
+        barBackgroundColor: Color(0xFF0C1628),
+        textTheme: CupertinoTextThemeData(
+          textStyle: TextStyle(color: textPrimary, fontSize: 16),
+          navTitleTextStyle: TextStyle(
+            color: textPrimary,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          labelStyle: TextStyle(color: colorScheme.onSurface),
-          hintStyle: TextStyle(
-            color: colorScheme.onSurface.withValues(alpha: 0.85),
+          navLargeTitleTextStyle: TextStyle(
+            color: textPrimary,
+            fontSize: 32,
+            fontWeight: FontWeight.w700,
           ),
-        ),
-        listTileTheme: ListTileThemeData(
-          textColor: colorScheme.onSurface,
-          iconColor: colorScheme.primary,
         ),
       ),
-      home: const HomeShell(),
+      home: const HomeShell(
+        background: background,
+        surface: surface,
+        card: card,
+        border: border,
+        primary: primary,
+        secondary: secondary,
+        textPrimary: textPrimary,
+        textSecondary: textSecondary,
+      ),
     );
   }
 }
