@@ -1,13 +1,9 @@
 {
-    "name": "John",
-    "age": 25,
-    "weight": 180,
-    "height_cm": 178,
-    "diet": "vegetarian",
-    "intolerances": [],
-    "preferred_cuisines": [
-        "indian",
-        "italian",
-        "asian"
-    ]
+  "name": "",
+  "age": null,
+  "weight": null,
+  "height_cm": null,
+  "diet": "",
+  "intolerances": [],
+  "preferred_cuisines": []
 }

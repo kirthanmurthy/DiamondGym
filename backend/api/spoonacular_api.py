@@ -20,7 +20,8 @@ def search_recipes(ingredients=None,
         "number": number,
         "addRecipeInformation": True,
         "addRecipeNutrition": True,
-        "fillIngredients": True
+        "fillIngredients": True,
+        "addRecipeInstructions": True
     }
 
     if ingredients:
@@ -47,6 +48,17 @@ def search_recipes(ingredients=None,
         return []
 
     return data.get("results", [])
+
+def gather_instructions(recipe):
+    num = 1 
+    steps = []
+    for block in recipe.get("analyzedInstructions", []):
+        for step in block.get("steps", []):
+            text = step["step"].replace("\xa0", " ").strip()
+            steps.append(f"{num}. {text}")
+            num += 1
+
+    return steps
 
 def format_recipe(recipe):
     ingredients=[]
@@ -81,9 +93,11 @@ def format_recipe(recipe):
         "usedIngredients":used,
         "missedIngredients":missed,
         "cuisines":recipe.get("cuisines",[]),
+        "dishTypes": recipe.get("dishTypes", []), 
         "cook_time":recipe.get("readyInMinutes",None),
         "calories":calories,
-        "image":recipe.get("image",None)
+        "image":recipe.get("image",None),
+        "steps": gather_instructions(recipe) 
     }
 
 def get_clean_recipes(ingredients=None,
