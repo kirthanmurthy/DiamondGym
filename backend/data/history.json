@@ -124,6 +124,50 @@
                 "Asian"
             ],
             "image": "https://img.spoonacular.com/recipes/650484-312x231.jpg"
+        },
+        {
+            "recipe_id": 637440,
+            "title": "Chapchae (Korean Stir-Fried Noodles)",
+            "timestamp": "2026-03-07",
+            "ingredients": [
+                "sweet potato vermicelli noodles",
+                "onion",
+                "garlic",
+                "baby spinach",
+                "carrots",
+                "scallions",
+                "mushrooms",
+                "zucchini",
+                "olive oil",
+                "sesame oil",
+                "soy sauce",
+                "sugar",
+                "salt"
+            ],
+            "usedIngredients": [
+                "onion",
+                "garlic",
+                "olive oil"
+            ],
+            "missedIngredients": [
+                "sweet potato vermicelli noodles",
+                "baby spinach",
+                "carrots",
+                "scallions",
+                "mushrooms",
+                "zucchini",
+                "sesame oil",
+                "soy sauce",
+                "sugar",
+                "salt"
+            ],
+            "cook_time": 45,
+            "calories": 396,
+            "cuisines": [
+                "Korean",
+                "Asian"
+            ],
+            "image": "https://img.spoonacular.com/recipes/637440-312x231.jpg"
         }
     ]
 }

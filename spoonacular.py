@@ -14,7 +14,8 @@ def search_recipe(ingredients, restrictions, cuisine_preference, time_available)
         'apiKey': API_KEY,
         'number': 15,
         'addRecipeInformation': True,
-        'addRecipeNutrition': True
+        'addRecipeNutrition': True, 
+        'addRecipeInstructions': True
     }
 
     if ingredients:
@@ -83,6 +84,20 @@ def rank_recipes(recipes, context, user_preferences):
         recipe["score"] = score_recipe(recipe, context, user_preferences)
 
     return sorted(recipes, key=lambda x: x["score"], reverse=True)
+
+def gather_instructions(recipe):
+    num = 1 
+    steps = []
+    for block in recipe.get("analyzedInstructions", []):
+        for step in block.get("steps", []):
+            text = step["step"].replace("\xa0", " ").strip()
+            steps.append(f"{num}. {text}")
+            num += 1
+
+    return steps
+
+def get_image(recipe): 
+    return recipe.get("image", "")
 
 if __name__ == "__main__":
     ingredients = input("List on hand ingredients: ")
