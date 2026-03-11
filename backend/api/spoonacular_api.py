@@ -20,7 +20,6 @@ def search_recipes(ingredients=None,
         "number": number,
         "addRecipeInformation": True,
         "addRecipeNutrition": True,
-        "fillIngredients": True
     }
 
     if ingredients:

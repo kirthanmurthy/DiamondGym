@@ -13,17 +13,27 @@ class RecipeData {
 }
 
 class FavoriteEntry {
-  const FavoriteEntry({required this.name, required this.notes});
+  const FavoriteEntry({
+    required this.name,
+    required this.notes,
+    this.recipeId,
+  });
 
   final String name;
   final String notes;
+  final int? recipeId;
 }
 
 class HistoryEntry {
-  const HistoryEntry({required this.name, required this.details});
+  const HistoryEntry({
+    required this.name,
+    required this.details,
+    this.recipeId,
+  });
 
   final String name;
   final String details;
+  final int? recipeId;
 }
 
 class ProfileData {
