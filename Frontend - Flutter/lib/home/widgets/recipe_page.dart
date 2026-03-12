@@ -5,9 +5,6 @@ import '../models/api_recipe.dart';
 class RecipePage extends StatelessWidget {
   const RecipePage({
     required this.recipe,
-    required this.isFavorite,
-    required this.onToggleFavorite,
-    required this.onSelectRecipe,
     required this.surface,
     required this.border,
     required this.primary,
@@ -17,9 +14,6 @@ class RecipePage extends StatelessWidget {
   });
 
   final ApiRecipe recipe;
-  final bool isFavorite;
-  final Future<void> Function() onToggleFavorite;
-  final Future<void> Function() onSelectRecipe;
   final Color surface;
   final Color border;
   final Color primary;
@@ -36,7 +30,6 @@ class RecipePage extends StatelessWidget {
     return CupertinoPageScaffold(
       backgroundColor: const Color(0xFF07111F),
       navigationBar: CupertinoNavigationBar(
-        transitionBetweenRoutes: false,
         middle: Text(recipe.title),
         backgroundColor: const Color(0xFF0C1628),
       ),
@@ -85,44 +78,6 @@ class RecipePage extends StatelessWidget {
                     Text(
                       'Score: ${recipe.score.toStringAsFixed(2)}',
                       style: TextStyle(color: textSecondary, fontSize: 12),
-                    ),
-                    if (recipe.ingredients.isNotEmpty) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        'Ingredients: ${recipe.ingredients.join(', ')}',
-                        style: TextStyle(color: textSecondary, fontSize: 13),
-                      ),
-                    ],
-                    const SizedBox(height: 14),
-                    Row(
-                      children: [
-                        CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size.zero,
-                          onPressed: onToggleFavorite,
-                          child: Row(
-                            children: [
-                              Icon(
-                                isFavorite
-                                    ? CupertinoIcons.heart_fill
-                                    : CupertinoIcons.heart,
-                                color: const Color(0xFFFF7FB0),
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                isFavorite ? 'Favorited' : 'Favorite',
-                                style: TextStyle(color: textPrimary),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        CupertinoButton.filled(
-                          onPressed: onSelectRecipe,
-                          child: const Text('Select recipe'),
-                        ),
-                      ],
                     ),
                   ],
                 ),

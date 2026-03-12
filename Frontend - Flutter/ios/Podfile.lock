@@ -10,11 +10,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-<<<<<<< HEAD
-=======
-  path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
->>>>>>> a3936b5ca9f66809ab74dc73d18f2c127a3e3ee6
 
 PODFILE CHECKSUM: 787355b58dd26b8943a6f87cf34b8b25f0744496
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.16.2

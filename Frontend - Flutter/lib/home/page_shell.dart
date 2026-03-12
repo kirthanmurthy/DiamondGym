@@ -19,7 +19,6 @@ class PageShell extends StatelessWidget {
     return CupertinoPageScaffold(
       backgroundColor: background,
       navigationBar: CupertinoNavigationBar(
-        transitionBetweenRoutes: false,
         middle: Text(title),
         backgroundColor: barColor,
       ),

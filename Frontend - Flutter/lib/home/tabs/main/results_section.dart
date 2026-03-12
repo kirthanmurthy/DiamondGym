@@ -9,9 +9,6 @@ class ResultsSection extends StatelessWidget {
     required this.loading,
     required this.didSearch,
     required this.items,
-    required this.isFavorite,
-    required this.onToggleFavorite,
-    required this.onSelectRecipe,
     required this.surface,
     required this.card,
     required this.border,
@@ -24,9 +21,6 @@ class ResultsSection extends StatelessWidget {
   final bool loading;
   final bool didSearch;
   final List<ApiRecipe> items;
-  final bool Function(ApiRecipe recipe) isFavorite;
-  final Future<void> Function(ApiRecipe recipe) onToggleFavorite;
-  final Future<void> Function(ApiRecipe recipe) onSelectRecipe;
   final Color surface;
   final Color card;
   final Color border;
@@ -43,18 +37,6 @@ class ResultsSection extends StatelessWidget {
       border: border,
       child: Column(
         children: [
-          if (loading)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CupertinoActivityIndicator(color: primary),
-                const SizedBox(width: 10),
-                Text(
-                  'Loading recipes...',
-                  style: TextStyle(color: textSecondary),
-                ),
-              ],
-            ),
           if (!loading && items.isEmpty)
             Text(
               didSearch
@@ -65,9 +47,6 @@ class ResultsSection extends StatelessWidget {
           ...items.map(
             (item) => ApiResultCard(
               recipe: item,
-              isFavorite: isFavorite(item),
-              onToggleFavorite: () => onToggleFavorite(item),
-              onSelectRecipe: () => onSelectRecipe(item),
               surface: surface,
               border: border,
               primary: primary,
