@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+import 'models/api_recipe.dart';
+import 'services/api_client.dart';
 import 'models/app_models.dart';
 import 'page_shell.dart';
 import 'tab_icon.dart';
@@ -35,7 +37,10 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
+  static const _apiBaseUrl = 'http://127.0.0.1:5001';
+
   final tab = CupertinoTabController(initialIndex: 0);
+  final api = ApiClient(baseUrl: _apiBaseUrl);
 
   final feelingController = TextEditingController();
   final budgetController = TextEditingController();
@@ -129,6 +134,7 @@ class _HomeShellState extends State<HomeShell> {
 
     pantryItemController.clear();
     pantryQuantityController.clear();
+    api.addPantryItem(item).catchError((_) {});
   }
 
   void fave() {
@@ -157,7 +163,10 @@ class _HomeShellState extends State<HomeShell> {
     setState(() {
       historyEntries.insert(
         0,
-        HistoryEntry(name: name, details: historyDetailsController.text.trim()),
+        HistoryEntry(
+          name: name,
+          details: historyDetailsController.text.trim(),
+        ),
       );
     });
 
@@ -175,6 +184,88 @@ class _HomeShellState extends State<HomeShell> {
       );
       tab.index = 0;
     });
+  }
+
+  bool isFavorite(ApiRecipe recipe) {
+    final recipeId = recipe.id;
+    return favorites.any(
+      (entry) =>
+          (recipeId != null && entry.recipeId == recipeId) ||
+          entry.name.toLowerCase() == recipe.title.toLowerCase(),
+    );
+  }
+
+  Future<void> toggleFavorite(ApiRecipe recipe) async {
+    final recipeId = recipe.id;
+    final currentlyFavorite = isFavorite(recipe);
+
+    setState(() {
+      if (currentlyFavorite) {
+        favorites.removeWhere(
+          (entry) =>
+              (recipeId != null && entry.recipeId == recipeId) ||
+              entry.name.toLowerCase() == recipe.title.toLowerCase(),
+        );
+      } else {
+        favorites.insert(
+          0,
+          FavoriteEntry(
+            name: recipe.title,
+            notes: recipe.cuisines.join(', '),
+            recipeId: recipeId,
+          ),
+        );
+      }
+    });
+
+    try {
+      if (currentlyFavorite) {
+        if (recipeId != null) {
+          await api.removeFavorite(recipeId);
+        }
+      } else {
+        await api.saveFavorite(recipe);
+      }
+    } catch (_) {}
+  }
+
+  Future<void> selectRecipe(ApiRecipe recipe) async {
+    final removedIngredients = <String>[];
+
+    setState(() {
+      for (final ingredient in recipe.ingredients) {
+        final pantryIndex = pantryItems.indexWhere(
+          (item) => item.split('•').first.trim().toLowerCase() == ingredient,
+        );
+
+        if (pantryIndex != -1) {
+          removedIngredients.add(pantryItems[pantryIndex]);
+          pantryItems.removeAt(pantryIndex);
+        }
+      }
+
+      historyEntries.removeWhere(
+        (entry) =>
+            (recipe.id != null && entry.recipeId == recipe.id) ||
+            entry.name.toLowerCase() == recipe.title.toLowerCase(),
+      );
+      historyEntries.insert(
+        0,
+        HistoryEntry(
+          name: recipe.title,
+          details: removedIngredients.isEmpty
+              ? 'Added from recipe selection'
+              : 'Removed from pantry: ${removedIngredients.join(', ')}',
+          recipeId: recipe.id,
+        ),
+      );
+
+      tab.index = 2;
+    });
+
+    try {
+      await api.selectRecipe(recipe);
+    } catch (_) {}
   }
 
   @override
@@ -310,6 +401,9 @@ class _HomeShellState extends State<HomeShell> {
             recipeMacrosController: recipeMacrosController,
             onAddRecipe: recipe,
             recipes: recipes,
+            isFavorite: isFavorite,
+            onToggleFavorite: toggleFavorite,
+            onSelectRecipe: selectRecipe,
             surface: widget.surface,
             card: widget.card,
             border: widget.border,

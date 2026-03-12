@@ -6,6 +6,9 @@ import 'recipe_page.dart';
 class ApiResultCard extends StatelessWidget {
   const ApiResultCard({
     required this.recipe,
+    required this.isFavorite,
+    required this.onToggleFavorite,
+    required this.onSelectRecipe,
     required this.surface,
     required this.border,
     required this.primary,
@@ -15,6 +18,9 @@ class ApiResultCard extends StatelessWidget {
   });
 
   final ApiRecipe recipe;
+  final bool isFavorite;
+  final Future<void> Function() onToggleFavorite;
+  final Future<void> Function() onSelectRecipe;
   final Color surface;
   final Color border;
   final Color primary;
@@ -34,6 +40,9 @@ class ApiResultCard extends StatelessWidget {
           CupertinoPageRoute(
             builder: (context) => RecipePage(
               recipe: recipe,
+              isFavorite: isFavorite,
+              onToggleFavorite: onToggleFavorite,
+              onSelectRecipe: onSelectRecipe,
               surface: surface,
               border: border,
               primary: primary,
@@ -127,6 +136,42 @@ class ApiResultCard extends StatelessWidget {
                     Text(
                       'Score: ${recipe.score.toStringAsFixed(2)}',
                       style: TextStyle(color: textSecondary, fontSize: 12),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          onPressed: onToggleFavorite,
+                          child: Icon(
+                            isFavorite
+                                ? CupertinoIcons.heart_fill
+                                : CupertinoIcons.heart,
+                            color: isFavorite ? const Color(0xFFFF7FB0) : primary,
+                            size: 20,
+                          ),
+                        ),
+                        const Spacer(),
+                        CupertinoButton(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          minimumSize: Size.zero,
+                          color: primary.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(999),
+                          onPressed: onSelectRecipe,
+                          child: Text(
+                            'Select recipe',
+                            style: TextStyle(
+                              color: primary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 10),
                     Row(
