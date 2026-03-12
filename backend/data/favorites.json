@@ -3,6 +3,15 @@
         {
             "recipe_id": 12345,
             "title": "Chicken Stir Fry"
+        },
+        {
+            "recipe_id": 1646941,
+            "title": "Mexican Quinoa Bowl",
+            "ingredients": [],
+            "cuisines": [
+                "Mexican"
+            ],
+            "image": "https://img.spoonacular.com/recipes/1646941-312x231.jpg"
         }
     ]
 }

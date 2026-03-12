@@ -168,6 +168,20 @@
                 "Asian"
             ],
             "image": "https://img.spoonacular.com/recipes/637440-312x231.jpg"
+        },
+        {
+            "recipe_id": 1646941,
+            "title": "Mexican Quinoa Bowl",
+            "timestamp": "2026-03-11",
+            "ingredients": [],
+            "usedIngredients": [],
+            "missedIngredients": [],
+            "cook_time": 45,
+            "calories": 221,
+            "cuisines": [
+                "Mexican"
+            ],
+            "image": "https://img.spoonacular.com/recipes/1646941-312x231.jpg"
         }
     ]
 }

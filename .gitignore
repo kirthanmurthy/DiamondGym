@@ -1,1 +1,8 @@
 .env
+.DS_Store
+__pycache__/
+*.pyc
+backend/.venv/
+backend/data/favorites.json
+backend/data/history.json
+backend/data/pantry.json
