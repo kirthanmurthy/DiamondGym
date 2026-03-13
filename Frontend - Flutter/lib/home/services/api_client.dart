@@ -17,7 +17,8 @@ class ApiClient {
 
     final res = await http.get(uri);
     if (res.statusCode != 200) {
-      throw Exception('Request failed');
+      final body = res.body.trim();
+      throw Exception(body.isEmpty ? 'Request failed' : body);
     }
 
     final data = jsonDecode(res.body) as List<dynamic>;

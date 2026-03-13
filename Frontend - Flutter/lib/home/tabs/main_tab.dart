@@ -110,9 +110,9 @@ class _MainTabState extends State<MainTab> {
       setState(() {
         results = data;
       });
-    } catch (_) {
+    } catch (error) {
       setState(() {
-        errorText = 'Unable to load recipes right now.';
+        errorText = error.toString().replaceFirst('Exception: ', '');
       });
     } finally {
       setState(() {

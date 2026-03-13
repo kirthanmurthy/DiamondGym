@@ -47,7 +47,58 @@ def search():
     except Exception:
         current_hour = datetime.now().hour
 
-    recipes = get_clean_recipes(ingredients, profile.get("diet"), profile.get("intolerances", []), cuisine, time, 30)
+    try:
+        diet = profile.get("diet")
+        intolerances = profile.get("intolerances", [])
+
+        recipes = get_clean_recipes(
+            ingredients,
+            diet,
+            intolerances,
+            cuisine,
+            time,
+            30,
+        )
+
+        if len(recipes) < 10 and cuisine:
+            recipes += get_clean_recipes(
+                ingredients,
+                diet,
+                intolerances,
+                None,
+                time,
+                30,
+            )
+
+        if len(recipes) < 10 and time:
+            recipes += get_clean_recipes(
+                ingredients,
+                diet,
+                intolerances,
+                None,
+                None,
+                30,
+            )
+
+        if len(recipes) < 10 and diet:
+            recipes += get_clean_recipes(
+                ingredients,
+                None,
+                intolerances,
+                None,
+                None,
+                30,
+            )
+
+        unique = {}
+        for item in recipes:
+            recipe_id = item.get("id")
+            if recipe_id is not None:
+                unique[recipe_id] = item
+        recipes = list(unique.values())
+    except RuntimeError as error:
+        return jsonify({"error": str(error)}), 502
+
     ranked = rank_recipes(recipes,  pantry.get("ingredients", []), user_preferences, history, favorite_ids, current_hour)
 
     out = []
