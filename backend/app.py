@@ -3,9 +3,15 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from api.spoonacular_api import get_clean_recipes
+from history.history_manager import (
+    add_favorite,
+    add_to_history,
+    get_favorites,
+    get_history,
+    remove_favorite,
+)
+from pantry.pantry_manager import add_ingredient, load_pantry, subtract_recipe_ingredients
 from ranking.ranking_engine import rank_recipes
-from pantry.pantry_manager import load_pantry
-from history.history_manager import get_history, get_favorites
 from user.user_profile import load_profile
 
 app = Flask(__name__)
@@ -16,6 +22,20 @@ def calories(recipe):
         if item.get("name") == "Calories":
             return int(item.get("amount", 0))
     return None
+
+
+def _recipe_from_payload(data):
+    return {
+        "id": data.get("id"),
+        "title": data.get("title", ""),
+        "ingredients": data.get("ingredients", []),
+        "cuisines": data.get("cuisines", []),
+        "cook_time": data.get("readyInMinutes"),
+        "calories": data.get("calories"),
+        "image": data.get("image", ""),
+        "steps": data.get("steps", []),
+    }
+
 
 @app.get("/search")
 def search():
@@ -105,7 +125,10 @@ def search():
     for recipe in ranked:
         out.append(
             {
+                "id": recipe.get("id"),
                 "title": recipe.get("title", ""),
+                "ingredients": recipe.get("ingredients", []),
+                "cuisines": recipe.get("cuisines", []),
                 "readyInMinutes": recipe.get("cook_time"),
                 "calories": recipe.get("calories"),
                 "score": round(recipe.get("score", 0), 2),
@@ -115,6 +138,44 @@ def search():
         )
 
     return jsonify(out)
+
+
+@app.post("/pantry/add")
+def add_pantry_item():
+    payload = request.get_json(silent=True) or {}
+    ingredient = (payload.get("ingredient") or "").strip().lower()
+    if ingredient:
+        add_ingredient(ingredient)
+
+    return jsonify({"ingredients": load_pantry().get("ingredients", [])})
+
+
+@app.post("/favorites")
+def save_favorite():
+    payload = request.get_json(silent=True) or {}
+    recipe = _recipe_from_payload(payload)
+    add_favorite(recipe)
+    return jsonify({"favorites": get_favorites()})
+
+
+@app.delete("/favorites/<int:recipe_id>")
+def delete_favorite(recipe_id):
+    remove_favorite(recipe_id)
+    return jsonify({"favorites": get_favorites()})
+
+
+@app.post("/recipes/select")
+def select_recipe():
+    payload = request.get_json(silent=True) or {}
+    recipe = _recipe_from_payload(payload)
+    add_to_history(recipe)
+    subtract_recipe_ingredients(recipe.get("ingredients", []))
+    return jsonify(
+        {
+            "history": get_history(),
+            "ingredients": load_pantry().get("ingredients", []),
+        }
+    )
 
 
 if __name__ == "__main__":

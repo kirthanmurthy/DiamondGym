@@ -182,6 +182,31 @@
                 "Mexican"
             ],
             "image": "https://img.spoonacular.com/recipes/1646941-312x231.jpg"
+        },
+        {
+            "recipe_id": 1505411,
+            "title": "Ground Beef Street Tacos",
+            "timestamp": "2026-03-14",
+            "ingredients": [
+                "ground beef",
+                "corn tortillas 4\"",
+                "taco seasoning",
+                "onion powder",
+                "chili powder",
+                "cheese",
+                "onion",
+                "cherry tomatoes",
+                "cilantro",
+                "lime juice"
+            ],
+            "usedIngredients": [],
+            "missedIngredients": [],
+            "cook_time": 20,
+            "calories": 353,
+            "cuisines": [
+                "Mexican"
+            ],
+            "image": "https://img.spoonacular.com/recipes/1505411-312x231.jpg"
         }
     ]
 }

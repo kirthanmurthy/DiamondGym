@@ -26,6 +26,9 @@ class MainTab extends StatefulWidget {
     required this.recipeMacrosController,
     required this.onAddRecipe,
     required this.recipes,
+    required this.isFavorite,
+    required this.onToggleFavorite,
+    required this.onSelectRecipe,
     required this.surface,
     required this.card,
     required this.border,
@@ -49,6 +52,9 @@ class MainTab extends StatefulWidget {
   final TextEditingController recipeMacrosController;
   final VoidCallback onAddRecipe;
   final List<RecipeData> recipes;
+  final bool Function(ApiRecipe recipe) isFavorite;
+  final Future<void> Function(ApiRecipe recipe) onToggleFavorite;
+  final Future<void> Function(ApiRecipe recipe) onSelectRecipe;
   final Color surface;
   final Color card;
   final Color border;
@@ -171,6 +177,9 @@ class _MainTabState extends State<MainTab> {
             loading: isLoading,
             didSearch: didSearch,
             items: results,
+            isFavorite: widget.isFavorite,
+            onToggleFavorite: widget.onToggleFavorite,
+            onSelectRecipe: widget.onSelectRecipe,
             surface: widget.surface,
             card: widget.card,
             border: widget.border,
