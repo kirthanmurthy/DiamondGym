@@ -2,30 +2,16 @@ import 'package:flutter/cupertino.dart';
 
 import '../models/api_query.dart';
 import '../models/api_recipe.dart';
-import '../models/app_models.dart';
 import '../services/api_client.dart';
 import 'main/main_top.dart';
-import 'main/manual_section.dart';
-import 'main/rank_section.dart';
 import 'main/results_section.dart';
 import 'main/search_section.dart';
 
 class MainTab extends StatefulWidget {
   const MainTab({
-    required this.feelingController,
-    required this.budgetController,
     required this.timeController,
-    required this.macrosController,
     required this.cuisinesController,
     required this.pantryItems,
-    required this.onAddRanking,
-    required this.rankingInputs,
-    required this.recipeNameController,
-    required this.recipeTimeController,
-    required this.recipeBudgetController,
-    required this.recipeMacrosController,
-    required this.onAddRecipe,
-    required this.recipes,
     required this.isFavorite,
     required this.onToggleFavorite,
     required this.onSelectRecipe,
@@ -38,20 +24,9 @@ class MainTab extends StatefulWidget {
     super.key,
   });
 
-  final TextEditingController feelingController;
-  final TextEditingController budgetController;
   final TextEditingController timeController;
-  final TextEditingController macrosController;
   final TextEditingController cuisinesController;
   final List<String> pantryItems;
-  final VoidCallback onAddRanking;
-  final List<String> rankingInputs;
-  final TextEditingController recipeNameController;
-  final TextEditingController recipeTimeController;
-  final TextEditingController recipeBudgetController;
-  final TextEditingController recipeMacrosController;
-  final VoidCallback onAddRecipe;
-  final List<RecipeData> recipes;
   final bool Function(ApiRecipe recipe) isFavorite;
   final Future<void> Function(ApiRecipe recipe) onToggleFavorite;
   final Future<void> Function(ApiRecipe recipe) onSelectRecipe;
@@ -180,35 +155,6 @@ class _MainTabState extends State<MainTab> {
             isFavorite: widget.isFavorite,
             onToggleFavorite: widget.onToggleFavorite,
             onSelectRecipe: widget.onSelectRecipe,
-            surface: widget.surface,
-            card: widget.card,
-            border: widget.border,
-            primary: widget.primary,
-            textPrimary: widget.textPrimary,
-            textSecondary: widget.textSecondary,
-          ),
-          const SizedBox(height: 20),
-          RankSection(
-            feelingController: widget.feelingController,
-            budgetController: widget.budgetController,
-            macrosController: widget.macrosController,
-            items: widget.rankingInputs,
-            onSave: widget.onAddRanking,
-            surface: widget.surface,
-            card: widget.card,
-            border: widget.border,
-            primary: widget.primary,
-            textPrimary: widget.textPrimary,
-            textSecondary: widget.textSecondary,
-          ),
-          const SizedBox(height: 20),
-          ManualSection(
-            nameController: widget.recipeNameController,
-            timeController: widget.recipeTimeController,
-            budgetController: widget.recipeBudgetController,
-            notesController: widget.recipeMacrosController,
-            items: widget.recipes,
-            onAdd: widget.onAddRecipe,
             surface: widget.surface,
             card: widget.card,
             border: widget.border,

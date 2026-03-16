@@ -24,6 +24,21 @@ def calories(recipe):
     return None
 
 
+def cuisine_matches(recipe, preferred_cuisine):
+    if not preferred_cuisine:
+        return False
+
+    preferred = preferred_cuisine.strip().lower()
+    if not preferred:
+        return False
+
+    for item in recipe.get("cuisines", []):
+        if preferred in str(item).lower():
+            return True
+
+    return False
+
+
 def _recipe_from_payload(data):
     return {
         "id": data.get("id"),
@@ -61,6 +76,13 @@ def search():
         "calorie_goal": cal,
         "cuisine_preference": cuisine
     }
+
+    ranking_pantry = list(pantry.get("ingredients", []))
+    if ingredients:
+        for item in ingredients.split(","):
+            text = item.strip().lower()
+            if text and text not in ranking_pantry:
+                ranking_pantry.append(text)
 
     try:
         current_hour = datetime.now(ZoneInfo(timezone)).hour
@@ -110,6 +132,16 @@ def search():
                 30,
             )
 
+        if cuisine:
+            recipes += get_clean_recipes(
+                None,
+                diet,
+                intolerances,
+                cuisine,
+                None,
+                20,
+            )
+
         unique = {}
         for item in recipes:
             recipe_id = item.get("id")
@@ -119,10 +151,28 @@ def search():
     except RuntimeError as error:
         return jsonify({"error": str(error)}), 502
 
-    ranked = rank_recipes(recipes,  pantry.get("ingredients", []), user_preferences, history, favorite_ids, current_hour)
+    ranked = rank_recipes(
+        recipes,
+        ranking_pantry,
+        user_preferences,
+        history,
+        favorite_ids,
+        current_hour,
+    )
+
+    # Keep fallback behavior, but prioritize results that match the chosen cuisine.
+    if cuisine:
+        matching = []
+        non_matching = []
+        for recipe in ranked:
+            if cuisine_matches(recipe, cuisine):
+                matching.append(recipe)
+            else:
+                non_matching.append(recipe)
+        ranked = matching + non_matching
 
     out = []
-    for recipe in ranked:
+    for recipe in ranked[:10]:
         out.append(
             {
                 "id": recipe.get("id"),

@@ -52,12 +52,8 @@ def search_recipes(ingredients=None,
         data = _request_recipes(params)
         results = data.get("results", [])
 
-        # Spoonacular can return totalResults > 0 but an empty results list when
-        # this request is too "heavy" (nutrition + instructions + fillIngredients).
-        # Retry with a lighter request so search still returns recipes.
         if not results and data.get("totalResults", 0) > 0:
             fallback_params = dict(params)
-            fallback_params.pop("addRecipeNutrition", None)
             fallback_params.pop("addRecipeInstructions", None)
             fallback_params.pop("fillIngredients", None)
             data = _request_recipes(fallback_params)

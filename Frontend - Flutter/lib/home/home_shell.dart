@@ -42,16 +42,8 @@ class _HomeShellState extends State<HomeShell> {
   final tab = CupertinoTabController(initialIndex: 0);
   final api = ApiClient(baseUrl: _apiBaseUrl);
 
-  final feelingController = TextEditingController();
-  final budgetController = TextEditingController();
   final timeController = TextEditingController();
-  final macrosController = TextEditingController();
   final cuisinesController = TextEditingController();
-
-  final recipeNameController = TextEditingController();
-  final recipeTimeController = TextEditingController();
-  final recipeBudgetController = TextEditingController();
-  final recipeMacrosController = TextEditingController();
 
   final pantryItemController = TextEditingController();
   final pantryQuantityController = TextEditingController();
@@ -66,59 +58,10 @@ class _HomeShellState extends State<HomeShell> {
   final profileHeightController = TextEditingController();
   final profileWeightController = TextEditingController();
 
-  final List<String> rankingInputs = [];
-  final List<RecipeData> recipes = [];
   final List<String> pantryItems = [];
   final List<FavoriteEntry> favorites = [];
   final List<HistoryEntry> historyEntries = [];
   ProfileData profile = const ProfileData.empty();
-
-  void rank() {
-    final feel = feelingController.text.trim();
-    if (feel.isEmpty) {
-      return;
-    }
-
-    final budget = budgetController.text.trim();
-    final time = timeController.text.trim();
-    final macros = macrosController.text.trim();
-    final cuisines = cuisinesController.text.trim();
-
-    setState(() {
-      rankingInputs.insert(
-        0,
-        'Feeling: $feel • Budget: ${budget.isNotEmpty ? budget : '—'} • Time: ${time.isNotEmpty ? time : '—'} • Macros: ${macros.isNotEmpty ? macros : '—'} • Cuisines: ${cuisines.isNotEmpty ? cuisines : '—'}',
-      );
-    });
-  }
-
-  void recipe() {
-    final name = recipeNameController.text.trim();
-    if (name.isEmpty) {
-      return;
-    }
-
-    final time = recipeTimeController.text.trim();
-    final budget = recipeBudgetController.text.trim();
-    final macros = recipeMacrosController.text.trim();
-
-    setState(() {
-      recipes.insert(
-        0,
-        RecipeData(
-          name: name,
-          time: time.isNotEmpty ? time : '—',
-          budget: budget.isNotEmpty ? budget : '—',
-          macros: macros.isNotEmpty ? macros : '—',
-        ),
-      );
-    });
-
-    recipeNameController.clear();
-    recipeTimeController.clear();
-    recipeBudgetController.clear();
-    recipeMacrosController.clear();
-  }
 
   void pantry() {
     final item = pantryItemController.text.trim();
@@ -270,15 +213,8 @@ class _HomeShellState extends State<HomeShell> {
   @override
   void dispose() {
     tab.dispose();
-    feelingController.dispose();
-    budgetController.dispose();
     timeController.dispose();
-    macrosController.dispose();
     cuisinesController.dispose();
-    recipeNameController.dispose();
-    recipeTimeController.dispose();
-    recipeBudgetController.dispose();
-    recipeMacrosController.dispose();
     pantryItemController.dispose();
     pantryQuantityController.dispose();
     favoriteNameController.dispose();
@@ -386,20 +322,9 @@ class _HomeShellState extends State<HomeShell> {
         return _shell(
           title: 'Home',
           child: MainTab(
-            feelingController: feelingController,
-            budgetController: budgetController,
             timeController: timeController,
-            macrosController: macrosController,
             cuisinesController: cuisinesController,
             pantryItems: pantryItems,
-            onAddRanking: rank,
-            rankingInputs: rankingInputs,
-            recipeNameController: recipeNameController,
-            recipeTimeController: recipeTimeController,
-            recipeBudgetController: recipeBudgetController,
-            recipeMacrosController: recipeMacrosController,
-            onAddRecipe: recipe,
-            recipes: recipes,
             isFavorite: isFavorite,
             onToggleFavorite: toggleFavorite,
             onSelectRecipe: selectRecipe,

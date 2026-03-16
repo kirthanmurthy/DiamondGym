@@ -2,15 +2,30 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from datetime import datetime 
 
+def ingredient_matches(pantry_item, recipe_item):
+    pantry_text = pantry_item.strip().lower()
+    recipe_text = recipe_item.strip().lower()
+
+    if not pantry_text or not recipe_text:
+        return False
+
+    return pantry_text in recipe_text or recipe_text in pantry_text
+
 def compute_pantry_matches(recipes, pantry_ingredients):
-    pantry_set = set(pantry_ingredients)
+    pantry_list = [item.strip().lower() for item in pantry_ingredients if item and item.strip()]
 
     for recipe in recipes:
         used = []
         missed = []
 
         for ingredient in recipe.get("ingredients",[]):
-            if ingredient in pantry_set:
+            matched = False
+            for pantry_item in pantry_list:
+                if ingredient_matches(pantry_item, ingredient):
+                    matched = True
+                    break
+
+            if matched:
                 used.append(ingredient)
             else:
                 missed.append(ingredient)
@@ -73,10 +88,17 @@ def calorie_score(recipe_calories, calorie_goal):
 
     calorie_goal = int(calorie_goal)
     diff = abs(recipe_calories - calorie_goal)
+    ratio = diff / calorie_goal
 
-    score = max(0, 1 - diff / calorie_goal)
-
-    return score
+    if ratio <= 0.15:
+        return 1.0
+    if ratio <= 0.30:
+        return 0.6
+    if ratio <= 0.45:
+        return 0.2
+    if ratio <= 0.60:
+        return -0.2
+    return -0.8
 
 def cuisine_score(recipe_cuisines,preferred_cuisine):
     if not preferred_cuisine:
@@ -145,21 +167,27 @@ def time_of_meal_bonus(recipe, current_hour):
 def score_recipe(recipe, pantry, user_preferences, history, favorites, ingredient_sim, current_hour):
     score = 0
 
-    ### EXPLICIT CONTEXT BOOST 
-
     coverage = ingredient_coverage(recipe)
 
     score += 4 * coverage
 
     score += 2 * ingredient_sim
 
+    used_count = len(recipe.get("usedIngredients", []))
+    if pantry:
+        if used_count > 0:
+            score += 1
+        else:
+            score -= 1.5
+
     score += 1.5 * time_score(recipe.get("cook_time"), user_preferences.get("time_available"))
 
-    score += 1.5 * calorie_score(recipe.get("calories"), user_preferences.get("calorie_goal"))
+    score += 2.5 * calorie_score(recipe.get("calories"), user_preferences.get("calorie_goal"))
+
+    if user_preferences.get("calorie_goal") and recipe.get("calories") is None:
+        score -= 1.2
 
     score += cuisine_score(recipe.get("cuisines",[]), user_preferences.get("cuisine_preference"))
-
-    ### IMPLICIT CONTEXT BOOST 
 
     score += favorite_boost(recipe.get("id"), favorites)
 
@@ -184,6 +212,13 @@ def rank_recipes(recipes, pantry_ingredients, user_preferences, history, favorit
         recipe["score"] = score
         scored_recipes.append(recipe)
 
-    ranked = sorted(scored_recipes, key=lambda x:x["score"], reverse=True)
+    if pantry_ingredients:
+        ranked = sorted(
+            scored_recipes,
+            key=lambda x: (len(x.get("usedIngredients", [])) > 0, x["score"]),
+            reverse=True,
+        )
+    else:
+        ranked = sorted(scored_recipes, key=lambda x:x["score"], reverse=True)
 
     return ranked
